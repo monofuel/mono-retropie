@@ -44,12 +44,23 @@
     - zlib1g-dev
     - xmlstarlet
     - python-pyudev
-# TODO setup retropie user
-# TODO automate this
-# run `__user=retropie ./retropie_setup.sh` manually and install core/main packages
-
-#- shell: ./retropie_packages.sh
-#  proxy_env:
-#    __user: retropie
-#  args:
-#    chdir: /opt/RetroPie-Setup
+- name: create group retropie
+  group:
+    name: retropie
+    state: present
+- name: Add the user monofuel
+  user:
+    name: retropie
+    shell: /bin/bash
+    groups: retropie
+    append: yes
+- name: copy setup script over
+  copy:
+    src: retropie_setup.sh
+    dest: /opt/retropie_setup.sh
+    mode: 0775
+- name: run setup script
+  shell:
+    cmd: /opt/retropie_setup.sh
+  environment:
+    user: retropie

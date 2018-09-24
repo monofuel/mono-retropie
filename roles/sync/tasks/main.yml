@@ -26,5 +26,6 @@
     mode: 0775
 - cron:
     name: "sync"
+    minutes: '*/5'
     user: 'retropie'
     job: "/opt/sync.sh"

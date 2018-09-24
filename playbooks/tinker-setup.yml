@@ -2,7 +2,7 @@
   - hosts: monosnes
     become: yes
     roles:
-      - tools
-      - kintarosnes
+      #- tools
+      #- kintarosnes
       - retropie
-      - sync
+      #- sync
