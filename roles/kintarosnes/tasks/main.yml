@@ -1,0 +1,28 @@
+---
+# TODO use upstream script for raspberry pi
+# this fork is only for tinkerboard
+- git:
+    repo: http://github.com/TinkerBoard/gpio_lib_python
+    dest: /opt/AsusGPIO
+    depth: 1
+    update: yes
+- name: install asus gpio tools
+  apt: name={{item}} state=present
+  with_items:
+    # - python-dev
+    - python3-dev
+- shell: python3 setup.py install
+  args:
+    chdir: /opt/AsusGPIO
+- git:
+    repo: https://github.com/monofuel/KintaroSnes
+    dest: /opt/KintaroSnes
+    depth: 1
+    update: yes
+- shell: /opt/KintaroSnes/install.sh
+  args:
+    chdir: /opt/KintaroSnes
+- service: # should already be enabled by script, but just double-check
+    name: kintaro
+    state: started
+    enabled: yes

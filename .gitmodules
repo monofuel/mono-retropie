@@ -1,0 +1,3 @@
+[submodule "monosnes/build"]
+	path = monosnes/build
+	url = https://github.com/armbian/build

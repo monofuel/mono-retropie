@@ -1,0 +1,30 @@
+---
+- name: install tools
+  apt: name={{item}} state=present
+  with_items:
+    - nfs-common
+    - unison
+- name: Mount RetroPie Share
+  mount:
+    path: /mnt/mjolnir/RetroPie
+    src: mjolnir.mono:/megared/games/monofuel/RetroPie
+    fstype: nfs
+    state: mounted
+- name: copy sync script
+  copy:
+    src: sync.sh
+    dest: /opt/sync.sh
+    owner: retropie
+    group: retropie
+    mode: 0775
+- name: copy unison profile
+  copy:
+    src: retropie.prf
+    dest: /home/retropie/.unison/retropie.prf
+    owner: retropie
+    group: retropie
+    mode: 0775
+- cron:
+    name: "sync"
+    user: 'retropie'
+    job: "/opt/sync.sh"
