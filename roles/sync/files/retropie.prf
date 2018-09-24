@@ -1,2 +1,4 @@
 root=/mnt/mjolnir/RetroPie
 root=/home/retropie/RetroPie
+
+prefer = newer

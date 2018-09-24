@@ -22,7 +22,7 @@ echo Running sync script $(date +F) >> /var/log/retropie-backup.log
 
 touch $LOCK_FILE
 
-unison retropie
+unison -batch retropie
 
 rm $LOCK_FILE
 
