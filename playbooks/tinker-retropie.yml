@@ -1,0 +1,6 @@
+---
+- hosts: monosnes
+  become: yes
+  roles:
+    - retropie
+    - sync

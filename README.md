@@ -22,8 +22,8 @@ TODO
 
 ## TINKERBOARD S
 
-- image creation setup, and provisioning with ansdible after flashing is setup
-- TODO: setup image with ansible automatically
+- so far, flashing the tinkerboard with the legacy 4.4 image then running the playbook works
+- TODO: finish setting up building an image
 
 - EMMC instructions https://tinkerboarding.co.uk/wiki/index.php/Setup
 
@@ -35,12 +35,14 @@ TODO
   - `cd /vagrant`
   - `make monosnes`
   - use etcher or dd to flash `monosnes/build/output/images/*.img`
+  - flash to EMMC and mount sd card at /home/retropie
 
 - setup with ansible:
   - ssh in as root (pass 1234) and change the hostname to `monosnes`
   - add the ansible user
   - give ansible access to sudo without password
-  - flash to EMMC and mount sd card at /home/retropie
+  - `ansible-playbook playbooks/tinker-setup.yml`
+  - `ansible-playbook playbooks/tinker-retropie.yml` (will take a long time)
 
 - EMMC defaults to UMS u-boot for flashing to the EMMC from a PC
   - flash u-boot to sd-card for recovering from EMMC

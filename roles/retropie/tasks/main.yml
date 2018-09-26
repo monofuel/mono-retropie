@@ -48,11 +48,11 @@
   group:
     name: retropie
     state: present
-- name: Add the user monofuel
+- name: Add the user retropie
   user:
     name: retropie
     shell: /bin/bash
-    groups: retropie
+    groups: retropie, video
     append: yes
 - name: copy setup script over
   copy:
@@ -64,3 +64,4 @@
     cmd: /opt/retropie_setup.sh
   environment:
     user: retropie
+# TODO setup start emulationstation on boot

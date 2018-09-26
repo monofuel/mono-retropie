@@ -1,0 +1,104 @@
+---
+# https://github.com/MySora/Armbian-Setup-for-RetroPie/blob/master/setup.sh
+
+- name: install gpu deps
+  apt: name={{item}} state=present
+  with_items:
+    - libtool
+    - cmake
+    - autoconf
+    - automake
+    - libxml2-dev
+    - libusb-1.0-0-dev
+    - libavcodec-dev 
+    - libavformat-dev
+    - libavdevice-dev
+    - libdrm-dev
+    - pkg-config
+    - mpv
+    - libdrm2 
+    - libx11-6
+    - libx11-data
+    - libx11-xcb1
+    - libxau6
+    - libxcb-dri2-0
+    - libxcb1
+    - libxdmcp6
+    - libgles1-mesa-dev
+    - libgles2-mesa-dev
+    - libegl1-mesa-dev
+    - libgl1-mesa-dev
+    - libxcursor-dev
+    - libxi-dev
+    - libxinerama-dev
+    - libxrandr-dev
+    - libxss-dev
+    - xutils-dev
+
+# midgard
+- name: fetch driver
+  get_url:
+    url: https://github.com/rockchip-linux/rk-rootfs-build/raw/master/packages/armhf/libmali/libmali-rk-midgard-t76x-r14p0-r0p0_1.6-1_armhf.deb
+    dest: /tmp/libmali-rk-midgard-t76x-r14p0-r0p0_1.6-1_armhf.deb
+- name: Install driver
+  apt:
+    force: yes
+    deb: /tmp/libmali-rk-midgard-t76x-r14p0-r0p0_1.6-1_armhf.deb
+- name: fetch driver-dev
+  get_url:
+    url: https://github.com/rockchip-linux/rk-rootfs-build/raw/master/packages/armhf/libmali/libmali-rk-dev_1.6-1_armhf.deb
+    dest: /tmp/libmali-rk-dev_1.6-1_armhf.deb
+- name: Install driver-dev
+  apt:
+    force: yes
+    deb: /tmp/libmali-rk-dev_1.6-1_armhf.deb
+
+# libdrm-rockship
+- name: fetch libdrm-rockchip
+  git:
+    repo: https://github.com/rockchip-linux/libdrm-rockchip
+    dest: /opt/libdrm-rockchip
+    version: rockchip-2.4.74
+    update: yes
+- name: installing libdrm-rockchip
+  shell: ./autogen.sh --disable-intel --enable-rockchip-experimental-api --disable-freedreno --disable-tegra --disable-vmwgfx --disable-vc4 --disable-radeon --disable-amdgpu --disable-nouveau
+  args:
+    chdir: /opt/libdrm-rockchip
+- shell: make -j4 && make install
+  args:
+    chdir: /opt/libdrm-rockchip
+
+# libmali
+- git:
+    # repo: https://github.com/rockchip-linux/libmali
+    repo: https://github.com/MySora/libmali
+    dest: /opt/libmali
+    version: rockchip-header
+    update: yes
+- name: libmali rockchip-header
+  shell: cmake . && make install
+  args:
+    chdir: /opt/libmali
+- git:
+    # repo: https://github.com/rockchip-linux/libmali
+    repo: https://github.com/MySora/libmali
+    dest: /opt/libmali
+    version: rockchip
+    update: yes
+- name: libmali rockchip
+  shell: cmake . && make install
+  args:
+    chdir: /opt/libmali
+
+# install MPP
+- git:
+    repo: https://github.com/rockchip-linux/mpp
+    dest: /opt/mpp
+    depth: 1
+    update: yes
+- shell: cmake -src-dir /opt/mpp -DRKPLATFORM=ON -DHAVE_DRM=ON
+  args:
+    chdir: /opt/mpp
+- shell: make -j 4 && make install
+  args:
+    chdir: /opt/mpp
