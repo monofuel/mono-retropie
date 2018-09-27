@@ -21,7 +21,8 @@
     - libfreetype6-dev
     - libgbm-dev
     - libgles1-mesa
-    - libgles1-mesa-dev
+    # conflicts on linaro with libmali-rk-dev
+    # - libgles1-mesa-dev
     - libgles2-mesa 
     - libgles2-mesa-dev
     - libpulse-dev

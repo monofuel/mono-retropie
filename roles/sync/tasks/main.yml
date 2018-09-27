@@ -17,6 +17,11 @@
     owner: retropie
     group: retropie
     mode: 0775
+- file:
+    path: /home/retropie/.unison
+    owner: retropie
+    group: retropie
+    mode: 0770
 - name: copy unison profile
   copy:
     src: retropie.prf
@@ -24,8 +29,27 @@
     owner: retropie
     group: retropie
     mode: 0775
+    state: directory
+- name: install cron
+  apt: name=cron state=present
+- file:
+    path: /var/log/retropie-backup.log
+    owner: retropie
+    group: retropie
+    mode: 0644
+    state: touch
+- name: add retropie to groups
+  user:
+    name: retropie
+    groups: 
+    - input
+    - video
+    append: yes
 - cron:
     name: "sync"
     minute: '*/5'
     user: 'retropie'
     job: "/opt/sync.sh"
+# todo for some reason, /home/retropie/.emulationstation  wasn't owned by retropie
+# todo set emulationstation to default startup
+# linaro: systemctl set-default multi-user.target  
