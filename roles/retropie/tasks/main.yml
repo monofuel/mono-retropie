@@ -53,7 +53,7 @@
   user:
     name: retropie
     shell: /bin/bash
-    groups: retropie, video
+    groups: retropie, video, input
     append: yes
 - name: copy setup script over
   copy:
@@ -66,3 +66,4 @@
   environment:
     user: retropie
 # TODO setup start emulationstation on boot
+# linaro: systemctl set-default multi-user.target  
